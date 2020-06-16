@@ -79,5 +79,5 @@ COPY ./config/ ${HOME}/.jupyter/lab/user-settings/@jupyterlab/
 WORKDIR ${HOME}/Notebooks/
 
 # Install Jupyter Lab Extensions
-jupyter labextension install @jupyterlab/toc
-jupyter labextension install @jupyterlab/git
+RUN jupyter labextension install @jupyterlab/toc
+RUN jupyter labextension install @jupyterlab/git
