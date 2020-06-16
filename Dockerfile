@@ -18,9 +18,19 @@ RUN apt-get install -y curl
 COPY ./config/ ${HOME}/.jupyter/lab/user-settings/@jupyterlab/
 # Install Jupyter Lab Extensions
 RUN jupyter labextension install @jupyterlab/toc
+RUN jupyter labextension install nbdime-jupyterlab
 #RUN jupyter labextension install @jupyterlab/git
+RUN git clone https://github.com/jupyterlab/jupyterlab-git.git
+RUN cd jupyterlab-git
 
-RUN pip install --upgrade jupyterlab-git
+RUN pip install -e .[test]
+RUN jupyter serverextension enable --py jupyterlab_git --sys-prefix
+RUN jlpm
+RUN jupyter labextension link .
+
+cd ..
+
+# Re-build Jupyter Lab after extensions installed
 RUN jupyter lab build
 
 # Install .NET CLI dependencies
