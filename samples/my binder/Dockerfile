@@ -48,10 +48,15 @@ ENV DOTNET_RUNNING_IN_CONTAINER=true \
     # Opt out of telemetry until after we install jupyter when building the image, this prevents caching of machine id
     DOTNET_TRY_CLI_TELEMETRY_OPTOUT=true
 
+# Trigger first run experience by running arbitrary cmd
+RUN dotnet help
+
 # Copy notebooks
-COPY ./samples/notebooks/ ${HOME}/Notebooks/
+
+COPY ./notebooks/ ${HOME}/notebooks/
 
 # Copy package sources
+
 COPY ./NuGet.config ${HOME}/nuget.config
 
 RUN chown -R ${NB_UID} ${HOME}
@@ -61,7 +66,10 @@ USER ${USER}
 RUN pip install nteract_on_jupyter
 
 # Install lastest build from master branch of Microsoft.DotNet.Interactive from myget
-RUN dotnet tool install -g Microsoft.dotnet-interactive --version 1.0.131001 --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json"
+RUN dotnet tool install -g Microsoft.dotnet-interactive --add-source "https://dotnet.myget.org/F/dotnet-try/api/v3/index.json"
+
+#latest stable from nuget.org
+#RUN dotnet tool install -g Microsoft.dotnet-interactive --add-source "https://api.nuget.org/v3/index.json"
 
 ENV PATH="${PATH}:${HOME}/.dotnet/tools"
 RUN echo "$PATH"
@@ -72,5 +80,5 @@ RUN dotnet interactive jupyter install
 # Enable telemetry once we install jupyter for the image
 ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
 
-# Set root to Notebooks
-WORKDIR ${HOME}/Notebooks/
+# Set root to notebooks
+WORKDIR ${HOME}/notebooks/
