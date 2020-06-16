@@ -28,7 +28,7 @@ RUN jupyter serverextension enable --py jupyterlab_git --sys-prefix
 RUN jlpm
 RUN jupyter labextension link .
 
-cd ..
+RUN cd ..
 
 # Re-build Jupyter Lab after extensions installed
 RUN jupyter lab build
