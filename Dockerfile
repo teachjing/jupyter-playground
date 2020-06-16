@@ -14,6 +14,15 @@ USER root
 RUN apt-get update
 RUN apt-get install -y curl
 
+# Copy theme settings
+COPY ./config/ ${HOME}/.jupyter/lab/user-settings/@jupyterlab/
+# Install Jupyter Lab Extensions
+RUN jupyter labextension install @jupyterlab/toc
+#RUN jupyter labextension install @jupyterlab/git
+
+RUN pip install --upgrade jupyterlab-git
+RUN jupyter lab build
+
 # Install .NET CLI dependencies
 RUN apt-get install -y --no-install-recommends \
         libc6 \
@@ -72,12 +81,7 @@ RUN dotnet interactive jupyter install
 # Enable telemetry once we install jupyter for the image
 ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
 
-# Copy theme settings
-COPY ./config/ ${HOME}/.jupyter/lab/user-settings/@jupyterlab/
-
 # Set root to Notebooks
 WORKDIR ${HOME}/Notebooks/
 
-# Install Jupyter Lab Extensions
-RUN jupyter labextension install @jupyterlab/toc
-RUN jupyter labextension install @jupyterlab/git
+
