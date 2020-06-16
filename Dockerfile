@@ -48,7 +48,7 @@ ENV DOTNET_RUNNING_IN_CONTAINER=true \
     # Opt out of telemetry until after we install jupyter when building the image, this prevents caching of machine id
     DOTNET_TRY_CLI_TELEMETRY_OPTOUT=true
 
-# Copy notebooks
+# Copy folder/files
 COPY ./samples/notebooks/ ${HOME}/Notebooks/
 
 # Copy package sources
@@ -74,3 +74,6 @@ ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
 
 # Set root to Notebooks
 WORKDIR ${HOME}/Notebooks/
+
+# Copy theme settings
+COPY ./config/themes.jupyterlab-settings ${HOME}/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/
