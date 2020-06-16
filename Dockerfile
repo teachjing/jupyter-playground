@@ -73,8 +73,7 @@ RUN dotnet interactive jupyter install
 ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
 
 # Copy theme settings
-COPY ./config/themes.jupyterlab-settings ${HOME}/.jupyter/lab/user-settings/@jupyterlab/apputils-extension/
+COPY ./config/ ${HOME}/.jupyter/lab/user-settings/@jupyterlab/
 
 # Set root to Notebooks
 WORKDIR ${HOME}/Notebooks/
-
