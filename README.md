@@ -8,7 +8,11 @@ This is the powershell playground. Use this to load up notebooks to learn, test,
 
 ## Getting Started
 
-To get started with the playground, click on the launch binder link or goto [PowerShellPlayground.com](http://www.powershellplayground.com). Simple as that! It should load an environment on Mybinders.com which is a free cloud hosted notebook that will clone this repository. 
+To get started with the playground, click on the launch binder link or goto [PowerShellPlayground.com](http://www.powershellplayground.com). It should load an environment on Mybinders.com which is a free cloud hosted notebook that will clone this repository. 
+
+To run your own Jupyter Notebook locally using docker. 
+- docker build --tag powershellplayground .
+- docker run -p 8888:8888 powershellplayground
 
 ## Contributing
 
