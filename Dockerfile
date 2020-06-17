@@ -1,5 +1,7 @@
 FROM jupyter/scipy-notebook:latest
 
+RUN python -m pip  install -r requirements.tx
+
 # Install .NET CLI dependencies
 
 ARG NB_USER=jovyan
