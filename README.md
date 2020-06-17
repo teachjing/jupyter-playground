@@ -6,11 +6,15 @@ Welcome to the Powershell Playground
 
 This is the powershell playground. Use this to load up notebooks to learn, test, and grab various code snippets to use in your own scripts or notebooks. Please contribute any of your notebooks you think would help others.
 
+## Whats new 
+- Added [Azure Sentinel Notebooks](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/Microsoft/Security/Azure%20Sentinel) to query Sentinel from powershell via REST API. Tested both Device Code and Personal access key and successfully queried. Still need to be charts. 
+
 ## Getting Started
 
 To get started with the playground, click on the launch binder link or goto [PowerShellPlayground.com](http://www.powershellplayground.com). It should load an environment on Mybinders.com which is a free cloud hosted notebook that will clone this repository. 
 
 To run your own Jupyter Notebook locally using docker. 
+- clone the github repo and navigate to the docker folder.
 - docker build --tag powershellplayground .
 - docker run -p 8888:8888 powershellplayground
 
