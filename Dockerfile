@@ -1,9 +1,20 @@
 FROM jupyter/scipy-notebook:latest
 
-#Working Directory
-WORKDIR $HOME
+RUN python -m pip install --upgrade pip
+COPY requirements.txt ./requirements.txt
+RUN python -m pip  install -r requirements.txt
+RUN python -m pip install --upgrade --no-deps --force-reinstall notebook
+
+RUN jupyter labextension install @jupyterlab/toc
+
+RUN jupyter serverextension enable --py jupyterlab_git
+
+RUN jupyter lab build
 
 # Install .NET CLI dependencies
+
+#Working Directory
+WORKDIR $HOME
 
 ARG NB_USER=jovyan
 ARG NB_UID=1000
