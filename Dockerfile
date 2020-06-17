@@ -2,10 +2,6 @@ FROM jupyter/scipy-notebook:latest
 
 #Working Directory
 WORKDIR $HOME
-RUN python -m pip install --upgrade pip
-COPY requirements.txt ./requirements.txt
-RUN python -m pip  install -r requirements.txt
-RUN python -m pip install --upgrade --no-deps --force-reinstall notebook
 
 # Install .NET CLI dependencies
 
@@ -82,5 +78,3 @@ ENV DOTNET_TRY_CLI_TELEMETRY_OPTOUT=false
 
 # Set root to Notebooks
 WORKDIR ${HOME}/Notebooks/
-
-
