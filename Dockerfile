@@ -1,5 +1,6 @@
 FROM jupyter/scipy-notebook:latest
 
+WORKDIR ${HOME}
 RUN python -m pip  install -r requirements.txt
 
 # Install .NET CLI dependencies
@@ -9,8 +10,6 @@ ARG NB_UID=1000
 ENV USER ${NB_USER}
 ENV NB_UID ${NB_UID}
 ENV HOME /home/${NB_USER}
-
-WORKDIR ${HOME}
 
 USER root
 RUN apt-get update
