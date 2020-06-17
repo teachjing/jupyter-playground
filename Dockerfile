@@ -4,7 +4,7 @@ FROM jupyter/scipy-notebook:latest
 WORKDIR $HOME
 RUN python -m pip install --upgrade pip
 COPY requirements.txt ./requirements.txt
-RUN python -m pip  install -r requirements.tx
+RUN python -m pip  install -r requirements.txt
 RUN python -m pip install --upgrade --no-deps --force-reinstall notebook
 
 # Install .NET CLI dependencies
