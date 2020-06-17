@@ -1,6 +1,6 @@
 FROM jupyter/scipy-notebook:latest
 
-RUN python -m pip  install -r requirements.tx
+RUN python -m pip  install -r requirements.txt
 
 # Install .NET CLI dependencies
 
