@@ -7,7 +7,7 @@ Welcome to the Powershell Playground
 This is the powershell playground. Use this to load up notebooks to learn, test, and grab various code snippets to use in your own scripts or notebooks. Please contribute any of your notebooks you think would help others.
 
 ## Whats new 
-- Added Azure Sentinel Notebooks to query Sentinel from powershell via REST API. Tested both Device Code and Personal access key and successfully queried. Still need to be charts. 
+- Added [Azure Sentinel Notebooks](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/Microsoft/Security/Azure%20Sentinel) to query Sentinel from powershell via REST API. Tested both Device Code and Personal access key and successfully queried. Still need to be charts. 
 
 ## Getting Started
 
