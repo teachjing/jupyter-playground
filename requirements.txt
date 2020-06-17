@@ -2,5 +2,4 @@ numpy
 matplotlib
 ipywidgets
 jupyter_contrib_nbextensions
-jupyterlab-toc
 jupyterlab-git
