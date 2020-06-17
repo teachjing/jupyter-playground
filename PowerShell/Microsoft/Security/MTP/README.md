@@ -7,7 +7,7 @@ None available atm. Please contribute.
 <table align="left" style="margin-left:25px">
   <tr>
     <th>Type</th>
-    <th>Title</th>
+    <th col style="width:200px">Title</th>
     <th>Description</th>
   </tr>
   <tr>
