@@ -16,9 +16,6 @@ RUN apt-get install -y curl
 
 # Copy theme settings
 COPY ./config/ ${HOME}/.jupyter/lab/user-settings/@jupyterlab/
-# Install Jupyter Lab Extensions
-RUN jupyter labextension install @jupyterlab/toc
-RUN jupyter labextension install nbdime-jupyterlab
 
 # Install .NET CLI dependencies
 RUN apt-get install -y --no-install-recommends \

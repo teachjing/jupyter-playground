@@ -1,0 +1,7 @@
+numpy
+matplotlib
+ipywidgets
+jupyter_contrib_nbextensions
+nbdime-jupyterlab
+@jupyterlab/toc
+@jupyterlab/git
