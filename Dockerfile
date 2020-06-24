@@ -60,6 +60,7 @@ RUN dotnet_sdk_version=3.1.301 \
     && dotnet help
 
 # Copy notebooks
+COPY ./config ${HOME}/.jupyter/
 COPY ./ ${HOME}/Notebooks/
 
 # Copy package sources
