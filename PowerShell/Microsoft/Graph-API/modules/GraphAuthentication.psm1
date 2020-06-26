@@ -1,99 +1,81 @@
-function Invoke-GraphAuthenticateDeviceCode {
+function Invoke-GraphAuthentication {
+    param ( $authParams )
 
-    ## Code sourced from The Lazy Administrator
-    ## Blog Link here - https://www.thelazyadministrator.com/2019/07/22/connect-and-navigate-the-microsoft-graph-api-with-powershell/#Playing_With_Graph_Data_Get_Put_Post_Delete_and_Patch
+	if (!$authParams) {
+		Write-Host -ForegroundColor "Yellow" "`nNo Authentication Parameters provided`n"
+        break
+	} else {
+		Write-Host -ForegroundColor "Green" "`nAuthentication Parameters detected"
+        Write-Verbose ($authParams | ConvertTo-JSON)
+	}
 
-    param (
-        $clientAppId, 
-        $tenantDomain,
-        $resource = "https://graph.microsoft.com/"
-    )
+    switch ($authParams.grant_type) {
 
-    $redirectUrl = [System.Uri]"urn:ietf:wg:oauth:2.0:oob" # This is the standard Redirect URI for Windows Azure PowerShell
-    $serviceRootURL = "https://graph.microsoft.com//$tenantDomain"
-    $authUrl = "https://login.microsoftonline.com/$tenantDomain";
+        "client_credentials" {
+             $authUri = "https://login.microsoftonline.com/$($authParams.tenant)/oauth2";
+            Write-Host "Personal Access Token (PAT) grant_type"
+            
+            $authBody = @{
+                grant_type = "client_credentials"
+                client_id = $authParams.client_id
+                client_secret = $authParams.client_secret
+                scope = $authParams.scope
+                resource = $authParams.resource
+            }
+ 
+            Write-Host "`n----------------------------------------------------------------------------"
+            Write-Host "Authentiating with Microsoft Graph API using a Personal Access Token (PAT)"
+            Write-Host "https://docs.microsoft.com/en-us/azure/storage/common/storage-auth-aad-app" -ForegroundColor Gray
+            Write-Host "----------------------------------------------------------------------------"
 
-    Write-Host "Authentication Parameters"
-    Write-Host "Service Root URL: $($serviceRootURL)"
-    Write-Host "Authentication URL: $($authUrl)"
-    Write-Host "Resource URL: $($resource)"
-    Write-Host "Powershell Redirect URL: $($redirectUrl)"
-    Write-Host "Client APP ID: $($clientAppId -replace "\w","*")"
-    Write-Host "Tenant Domain: $($tenantDomain -replace "\w","*")"
-    $tokenResponse = $null
-    
-    if ($clientAppId -and $tenantDomain) {
-        $postParams = @{ resource = "$resource"; client_id = "$clientAppId" }
-        $postParams
-        $response = Invoke-RestMethod -Method POST -Uri "$authurl/oauth2/devicecode" -Body $postParams
-        Write-Host "`n $($response.message) "
-        #I got tired of manually copying the code, so I did string manipulation and stored the code in a variable and added to the clipboard automatically
-        $code = ($response.message -split "code " | Select-Object -Last 1) -split " to authenticate."
-        Write-Host "Double click this code and CTRL-V to copy: " -NoNewLine; Write-Host -ForeGroundColor Red "$($code)"
-        Set-Clipboard -Value $code
-        #Start-Process "https://microsoft.com/devicelogin"
+            $authResponse = Invoke-RestMethod -Method Post -Uri "$authUri/token" -Body $authBody -ErrorAction Stop
+            return $authResponse
+        }
 
-        $tokenParams = @{ grant_type = "device_code"; resource = "$resource"; client_id = "$clientAppId"; code = "$($response.device_code)" }    
-    } else {
-        Throw "No ClientAppID or TenantDomain provided.."
-    }
-
-    Write-Host -ForeGroundColor Yellow "`nWaiting for code"
-    While ( (!$tokenResponse) -and ($clientAppId) -and ($tenantDomain) ) {
-        Try {
-            $tokenResponse = Invoke-RestMethod -Method POST -Uri "$authurl/oauth2/token" -Body $tokenParams -ErrorAction Ignore
-            Write-Host -ForeGroundColor Green "`nReceived Token!"
-            Write-Host -ForegroundColor Green "Connected and Access Token received and will expire $($tokenResponse.expires_on)"
-            return $tokenResponse
-        } Catch {
+        "device_code" {
+            $authUri = "https://login.microsoftonline.com/$($authParams.tenant)/oauth2";
+            Write-Host "Device Code Workflow"
+            
+            $authBody = @{
+                resource = $authParams.resource
+                grant_type = "device_code"
+                client_id = $authParams.client_id
+            }
+            if ($authParams.scope) { $authBody.scope = $authParams.scope}
+            
+            $deviceCodeResponse = Invoke-RestMethod -Method POST -Uri "$authUri/devicecode" -Body $authBody
+            $authBody.code = $deviceCodeResponse.device_code
+            Write-Host "`n$($deviceCodeResponse.message) "
+            $code = ($deviceCodeResponse.message -split "code " | Select-Object -Last 1) -split " to authenticate."
+            Write-Host "`nDouble click this code and CTRL-V to copy: " -NoNewLine; Write-Host -ForeGroundColor cyan "$($code)"
+            Set-Clipboard -Value $code
+            
+            Write-Host ($authBody | ConvertTo-JSON)
+            
+            Write-Host -ForeGroundColor Yellow "`nWaiting for code"
+            While (!$tokenResponse) {
+                Try {
+                    $tokenResponse = Invoke-RestMethod -Method POST -Uri "$authUri/token" -Body $authBody -ErrorAction Ignore
+                    Write-Host -ForeGroundColor Green "`nReceived Token!"
+                    Write-Host -ForegroundColor Green "Connected and Access Token received and will expire $($tokenResponse.expires_on)"
+                    return $tokenResponse
+                } Catch {
+                }
+            }   
+        }
+        
+        "refresh_token" {
+            $authUrl = "https://login.windows.net/$($authParams.tenantId)/oauth2/v2.0/token"
+            Write-Host "`n----------------------------------------------------------------------------"
+            Write-Host "Refreshing Access Token with Microsoft Graph API using a Refresh Token"
+            Write-Host "https://docs.microsoft.com/en-us/azure/storage/common/storage-auth-aad-app" -ForegroundColor Gray
+            Write-Host "----------------------------------------------------------------------------"
+        	
+            $authResponse = Invoke-RestMethod -Method Post -Uri $authUrl -Body $authBody -ErrorAction Stop
+            if ($authResponse.expires_in) {
+                Write-Host -foregroundColor green "`nSuccessfully refreshed token."
+                return $authResponse
+            }
         }
     }
-}
-
-function Invoke-GraphAuthenticatePAT {
-
-    param (
-        $authvariables,
-        $resource
-    )
-    
-	Write-Host "`n----------------------------------------------------------------------------"
-	Write-Host "Authentiating with Microsoft Graph API using a Personal Access Token (PAT)"
-	Write-Host "https://docs.microsoft.com/en-us/azure/storage/common/storage-auth-aad-app" -ForegroundColor Gray
-	Write-Host "----------------------------------------------------------------------------"
-
-	if (!$authvariables) {
-		Write-Host -ForegroundColor "Yellow" "No Authentication Variables provided`n"
-
-		Write-Host -ForegroundColor "Gray" "-- Example--`n
-		`$config = @{
-			tenantId = $tenantID # This is the tenant ID
-			appId = $appId # This is the client ID when you register your app
-			appSecret = $appSecret # This is the generated client secret in the client app
-			resourceAppIdUri = $resource
-		}"
-		Write-Host "`nAuthenticating with config"
-		Write-Host -ForegroundColor "Gray" "Graph-Authenticate-PAT -authvariables `$config"
-		break
-	} else {
-		Write-Host -ForegroundColor "Green" "Authentication variables detected"
-	}
-
-	$oAuthUri = "https://login.windows.net/$($authvariables.tenantId)/oauth2/token"
-
-	$authBody = [Ordered] @{
-		resource = $resource
-		client_id = "$($authvariables.appId)"
-		client_secret = "$($authvariables.appSecret)"
-		grant_type = 'client_credentials'
-	}
-
-	$authResponse = Invoke-RestMethod -Method Post -Uri $oAuthUri -Body $authBody -ErrorAction Stop
-	$aadToken = $authResponse.access_token
-
-	Write-Host "`nReturning your Access Token. Be sure to insert it into a variable...`n"
-	Write-Host -foreground yellow "[Example] `n`$AccessToken = Authenticate-Graph-PAT `$config`n"
-
-	return $aadToken
-
 }
