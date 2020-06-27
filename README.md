@@ -24,7 +24,7 @@ Please reach out to Jing on LinkedIn if you want to contribute.
 
 ## Resources
 [Dot Net Interactive Github Repo](https://github.com/dotnet/interactive)<br>
-[A good base Jupyter Base Template written by one of the Powershell Devs](https://github.com/TylerLeonhardt/JupyterNotebooks-Template)<br>
+[A good Jupyter Base Template written by one of the Powershell Devs @TylerLeonhardt](https://github.com/TylerLeonhardt/JupyterNotebooks-Template)<br>
 [Dfinke - Run powershell scripts directly from a Jupyter Notebook file](https://github.com/dfinke/PowerShellNotebook)<br>
 
 ## Authors
