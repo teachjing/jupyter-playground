@@ -22,6 +22,11 @@ To run your own Jupyter Notebook locally using docker.
 
 Please reach out to Jing on LinkedIn if you want to contribute. 
 
+## Resources
+[Dot Net Interactive Github Repo](https://github.com/dotnet/interactive)
+[A good base Jupyter Base Template written by one of the Powershell Devs](https://github.com/TylerLeonhardt/JupyterNotebooks-Template)
+[Dfinke - Run powershell scripts directly from a Jupyter Notebook file](https://github.com/dfinke/PowerShellNotebook)
+
 ## Authors
 
  **Jing Nghik** - *Administrator* - [Github](https://github.com/jingsta), [LinkedIn](https://www.linkedin.com/in/jnghik)
