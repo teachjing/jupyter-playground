@@ -8,7 +8,7 @@ This is the powershell playground. Use this to load up notebooks to learn, test,
 
 ## Whats new 
 - Created a Youtube playlist with tutorial videos [here](https://www.youtube.com/playlist?list=PLM3TOIlrnaI6-XXwBSCB1ae1yyKIjaefq). Follow along using the workbooks I created to learn some powershell. Let me know if you like it so I know if I should spend more time trying to knock out more chapters. 
-- 6/30/2020 - Added Chapter 3 Tutorial Guide with embedded videos too
+- 6/30/2020 - Added Chapter 3,4, and 5 Tutorial Guide with embedded videos too
 - 6/27/2020 - Adding Chapter 2 Tutorial Guide with complimentary explainer videos [Chapter 2 - Variables in Powershell](https://github.com/jingsta/powershell-playground/blob/master/PowerShell/0%20-%20Tutorial%20with%20Videos/Chapter%202%20-%20Variables%20in%20PowerShell.ipynb)
 - 6/27/2020 - Added Chapter 1 Tutorial Guide with complimentary videos [Chapter 1 - Getting started with PowerShell](https://github.com/jingsta/powershell-playground/blob/master/PowerShell/0%20-%20Tutorial%20with%20Videos/Chapter%201%20-%20Getting%20started%20with%20PowerShell.ipynb)
 - Added [Azure Sentinel Notebooks](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/Microsoft/Security/Azure%20Sentinel) to query Sentinel from powershell via REST API. Tested both Device Code and Personal access key and successfully queried. Still need to be charts. 
