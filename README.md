@@ -6,6 +6,8 @@ Welcome to the Powershell Playground
 
 This is the powershell playground. Use this to load up notebooks to learn, test, and grab various code snippets to use in your own scripts or notebooks. Please contribute any of your notebooks you think would help others.
 
+[View the Video Playlist complimenting this repo](https://www.youtube.com/watch?v=QPMC0Q_4oug&list=PLM3TOIlrnaI6-XXwBSCB1ae1yyKIjaefq)
+
 ## Whats new 
 - Created a Youtube playlist with tutorial videos [here](https://www.youtube.com/playlist?list=PLM3TOIlrnaI6-XXwBSCB1ae1yyKIjaefq). Follow along using the workbooks I created to learn some powershell. Let me know if you like it so I know if I should spend more time trying to knock out more chapters. 
 - 7/2/2020 - Added Chapter 8,9 Tutorial guide with embedded videos [Link to folder here](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/0%20-%20Tutorial%20with%20Videos)
