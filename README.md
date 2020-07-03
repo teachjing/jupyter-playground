@@ -7,6 +7,7 @@ This is the powershell playground. Use this to load up Jupyter notebooks to lear
 | Take me to the | Description |
 | ------ | ------ |
 | [Free Playground](http://www.powershellplayground.com) | This is the easy button to start hammering out the workbooks without having to mess with docker or making your own local jupyter notebook locally. (Hosted by Mybinder.org) |
+| [Notebook Library](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/Microsoft) | My library of notebooks I have made. Please contribute any cool notebooks you have made and share to others!
 | [Jupyter Notebook Tutorial Workbooks](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/0%20-%20Tutorial%20with%20Videos) |  The best way to learn is to get your hands dirty. Load up the notebooks yourself or code with me by following the playlist corresponding to the workbook. 
 | [Youtube PowerShell Playlist](https://www.youtube.com/watch?v=QPMC0Q_4oug&list=PLM3TOIlrnaI6-XXwBSCB1ae1yyKIjaefq) | Watch me work through the workbooks on Youtube and follow along with the workbooks as I walk through each chapter. 
 | [PowerShellBook PDF](http://GoalKicker.com/PowerShellBook) | This tutorial was sourced from the great work done by http://GoalKicker.com/PowerShellBook and the beautiful people in the Stack Overflow community.
