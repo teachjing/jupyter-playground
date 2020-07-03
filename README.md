@@ -2,7 +2,7 @@
 
 <a href="https://mybinder.org/v2/gh/jingsta/powershell-playground/master?urlpath=lab" target="_blank">![Binder](https://mybinder.org/badge_logo.svg)</a>
 
-This is the powershell playground. Use this to load up notebooks to learn, test, and grab various code snippets to use in your own scripts or notebooks. Please contribute any of your notebooks you think would help others.
+This is the powershell playground. Use this to load up Jupyter notebooks to learn, test, and grab various code snippets to use in your own scripts or notebooks. Please contribute any of your notebooks you think would help others.
 
 | Take me to the | Description |
 | ------ | ------ |
