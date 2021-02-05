@@ -1,5 +1,7 @@
 FROM jupyter/base-notebook:latest
 
+# Install .NET CLI dependencies
+
 ARG NB_USER=jovyan
 ARG NB_UID=1000
 ENV USER ${NB_USER}
@@ -36,8 +38,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install .NET Core SDK
+
 # When updating the SDK version, the sha512 value a few lines down must also be updated.
 ENV DOTNET_SDK_VERSION 5.0.102
+
 RUN dotnet_sdk_version=5.0.102 \
     && curl -SL --output dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Sdk/$dotnet_sdk_version/dotnet-sdk-$dotnet_sdk_version-linux-x64.tar.gz \
     && dotnet_sha512='0ce2d5365ca39808fb71baec4584d4ec786491c3735543dc93244604ea97e242377d0987cd8b1e529258dee68f203b5780559201e7ea6d84487d6d8d433329b3' \
@@ -82,24 +86,27 @@ ENV DOTNET_INTERACTIVE_CLI_TELEMETRY_OPTOUT=false
 # Set root to Notebooks
 WORKDIR ${HOME}/Notebooks/
 
-#################################################
+
 #####         Installs Rust Kernel         ######
 # (https://forge.rust-lang.org/infra/other-installation-methods.html#more-rustup)
 #
 # install Rust using rustup, but you can check out the other installation methods if you need them.
-#USER root
-#RUN apt update
-#RUN apt install build-essential cmake graphviz -y
-#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s - -y
+run curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
 # Add Cargo's bin directory to your PATH environment variable and shell profile
-#RUN source $HOME/.cargo/env
-#ENV PATH="/$HOME/.cargo/bin:${PATH}"
+source $HOME/.cargo/env
+export PATH="$HOME/.cargo/bin:$PATH"
+
 # Installs the latest EvCxR "Evic-ser" Jupyter Kernel for Rust. Used to execute Rust code in Jupyter Notebook
 # requires build-essential module to compile cc.
-#RUN cargo install evcxr_jupyter
-#RUN evcxr_jupyter --install
+apt install build-essential cmake -y
+cargo install evcxr_jupyter
+evcxr_jupyter --install
+
 #################################################
 
 
 # Run JupyterLab
 CMD jupyter lab --ip=* --port=8888 --no-browser --allow-root
+
+
