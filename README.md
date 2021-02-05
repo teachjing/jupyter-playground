@@ -1,4 +1,6 @@
-# Powershell-Playground
+# Jupyter-Playground
+
+Renamed it Jupyter Playground to accomodate Rust and future languages I want to build content for. 
 
 <a href="https://mybinder.org/v2/gh/jingsta/powershell-playground/master?urlpath=lab" target="_blank">![Binder](https://mybinder.org/badge_logo.svg)</a>
 
