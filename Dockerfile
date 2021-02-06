@@ -10,7 +10,7 @@ WORKDIR ${HOME}
 
 USER root
 RUN apt-get update
-RUN apt-get install -y curl
+RUN apt-get install -y curl apt-utils
 
 ENV \
     # Enable detection of running in a container
@@ -53,8 +53,7 @@ RUN dotnet_sdk_version=5.0.102 \
 COPY ./config ${HOME}/.jupyter/
 
 # Copy Notebooks
-RUN mkdir /notebooks
-COPY ./notebooks /notebooks
+COPY ./Notebooks ${HOME}/Notebooks
 
 # Copy package sources
 COPY ./NuGet.config ${HOME}/nuget.config

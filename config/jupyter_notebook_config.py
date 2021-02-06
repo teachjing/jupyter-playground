@@ -17,7 +17,7 @@ c.ServerApp.token = ''
 
 ## The directory to use for notebooks and kernels.
 #  Default: ''
-c.ServerApp.root_dir = '/notebooks'
+#c.ServerApp.root_dir = ''
 
 ## Disable launching browser by redirect file
 #  
