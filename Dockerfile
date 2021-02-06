@@ -101,4 +101,4 @@ WORKDIR ${HOME}/Notebooks/
 
 
 # Run JupyterLab
-CMD jupyter lab --ip=* --port=8888 --no-browser --allow-root
+CMD jupyter lab --ip=* --port=8888
