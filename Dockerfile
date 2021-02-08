@@ -123,6 +123,8 @@ RUN evcxr_jupyter --install
 #################################################
 
 ## Final Build after all this shit is installed
+RUN chown -R ${NB_UID} ${HOME}
+USER ${USER}
 RUN pip install elyra
 RUN jupyter lab build
 
