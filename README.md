@@ -15,6 +15,7 @@ This is the powershell playground. Use this to load up Jupyter notebooks to lear
 | [PowerShellBook PDF](http://GoalKicker.com/PowerShellBook) | This tutorial was sourced from the great work done by http://GoalKicker.com/PowerShellBook and the beautiful people in the Stack Overflow community.
 
 ## Whats new 
+- 2/8/2021 - Fixing jupyter-lab github module and adding rust notebook. Also changing title to jupyterlab-playground since more code samples will be added from other languages. 
 - 7/13/2020 - Added Chapter 11 and Video Tutorial
 - 7/3/2020 - Updated Chapter 9 and Added Chapter 10 Tutorial guide with embedded videos [Link to folder here](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/0%20-%20Tutorial%20with%20Videos)
 - 7/2/2020 - Added Chapter 8,9 Tutorial guide with embedded videos [Link to folder here](https://github.com/jingsta/powershell-playground/tree/master/PowerShell/0%20-%20Tutorial%20with%20Videos)
