@@ -8,6 +8,7 @@ ENV HOME /home/${NB_USER}
 
 WORKDIR ${HOME}
 
+# use root to install package with package installer
 USER root
 
 ## Uninstall and cleanup Jupyter Lab Prior so that extensions/addons can be installed
@@ -30,10 +31,6 @@ RUN rm -rf $ANACONDA_HOME/envs/$CONDA_DEFAULT_ENV/share/jupyter
 ## Install necessary packages
 RUN apt-get update
 RUN apt-get install -y build-essential curl apt-utils git
-
-## Install Jupyterlab with extensions
-RUN echo "Installing/Updating JupyterLab"
-RUN pip install --upgrade pip tornado jupyterlab jupyterlab-git nbdime
 
 ENV \
     # Enable detection of running in a container
@@ -81,11 +78,16 @@ COPY ./Notebooks ${HOME}/Notebooks
 # Copy package sources
 COPY ./NuGet.config ${HOME}/nuget.config
 
+# change to jovyan to install packages via pip
 RUN chown -R ${NB_UID} ${HOME}
-#USER ${USER}
+USER ${USER}
 
-#Install nteract 
-RUN pip install nteract_on_jupyter
+## Install Jupyterlab with extensions
+RUN echo "Installing Jupyter Lab and all required packages"
+RUN echo "Installing/Updating JupyterLab"
+RUN pip install --upgrade pip tornado jupyterlab jupyterlab-git nbdime nteract_on_jupyter elyra
+RUN echo "Rebuilding Jupyter lab... THIS WILL TAKE A WHILE! GET SOME COFFEE"
+RUN jupyter lab build
 
 #Setup Tools Path
 RUN echo "Configuring $PATH path"
@@ -109,25 +111,19 @@ WORKDIR ${HOME}/Notebooks/
 # (https://forge.rust-lang.org/infra/other-installation-methods.html#more-rustup)
 #
 # install Rust using rustup, but you can check out the other installation methods if you need them.
-USER root
-RUN apt update
-RUN apt install build-essential cmake graphviz -y
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s - -y
+#USER root
+#RUN apt update
+#RUN apt install build-essential cmake graphviz -y
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s - -y
 # Add Cargo's bin directory to your PATH environment variable and shell profile
-RUN source $HOME/.cargo/env
-ENV PATH="/$HOME/.cargo/bin:${PATH}"
+#RUN source $HOME/.cargo/env
+#ENV PATH="/$HOME/.cargo/bin:${PATH}"
 # Installs the latest EvCxR "Evic-ser" Jupyter Kernel for Rust. Used to execute Rust code in Jupyter Notebook
 # requires build-essential module to compile cc.
-RUN cargo install evcxr_jupyter
-RUN evcxr_jupyter --install
+#RUN cargo install evcxr_jupyter
+#RUN evcxr_jupyter --install
 #################################################
 
-## Final Build after all this shit is installed
-RUN chown -R ${NB_UID} ${HOME}
-USER ${USER}
-RUN pip install elyra
-RUN jupyter lab build
-
-# Run JupyterLab
-CMD jupyter lab --ip=* --port=8888 --no-browser --allow-root
-
+## Runs Jupyter Lab on port 8888 and enables sudo to install packages
+CMD jupyter lab --ip=* --port=8888 --no-browser  -e GRANT_SUDO=yes
+# --allow-root
