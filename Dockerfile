@@ -6,10 +6,11 @@ ENV USER ${NB_USER}
 ENV NB_UID ${NB_UID}
 ENV HOME /home/${NB_USER}
 
-WORKDIR ${HOME}
+## Color variables
+ENV YELLOW='\033[1;33m'
+ENV NC='\033[0m'
 
-# use root to install package with package installer
-USER root
+WORKDIR ${HOME}
 
 ## Uninstall and cleanup Jupyter Lab Prior so that extensions/addons can be installed
 ## Trust me I tried so many things and its either build an image from scratch or uninstall/reinstall. Maybe revisit later
@@ -19,6 +20,9 @@ RUN pip uninstall -y jupyterlab-git || true;
 RUN pip uninstall -y jupyterlab-server || true;
 RUN pip uninstall -y jupyterlab || true;
 RUN pip uninstall -y nbdime || true;
+
+# use root to install package with package installer
+USER root
 
 ## Cleanup Folders
 RUN echo "Cleaning jupyter and jupyterlab workspace"
@@ -82,11 +86,12 @@ COPY ./NuGet.config ${HOME}/nuget.config
 RUN chown -R ${NB_UID} ${HOME}
 USER ${USER}
 
-## Install Jupyterlab with extensions
-RUN echo "Installing Jupyter Lab and all required packages"
-RUN echo "Installing/Updating JupyterLab"
+# Install Jupyterlab with extensions
+RUN echo "${YELLOW}Installing/Updating Jupyter Lab and all required packages"
 RUN pip install --upgrade pip tornado jupyterlab jupyterlab-git nbdime nteract_on_jupyter elyra
-RUN echo "Rebuilding Jupyter lab... THIS WILL TAKE A WHILE! GET SOME COFFEE"
+
+# Rebuild Jupyter Lab and relaunch after install. Reason for this is jupyterlab-git doesn't seem to work without building jupyyterlab prior to launching app
+RUN echo "Rebuilding Jupyter lab... THIS WILL TAKE A WHILE! GET SOME COFFEE${NC}"
 RUN jupyter lab build
 
 #Setup Tools Path
@@ -125,5 +130,8 @@ WORKDIR ${HOME}/Notebooks/
 #################################################
 
 ## Runs Jupyter Lab on port 8888 and enables sudo to install packages
-CMD jupyter lab --ip=* --port=8888 --no-browser  -e GRANT_SUDO=yes
-# --allow-root
+CMD jupyter lab --ip=* --port=8888 --no-browser --allow-root
+# --allow-root -e GRANT_SUDO=yes --user jovyan
+
+# to run 
+# docker run --user jovyan -e GRANT_SUDO=yes

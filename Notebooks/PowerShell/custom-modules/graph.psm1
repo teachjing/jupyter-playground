@@ -1,7 +1,9 @@
 function Invoke-GraphAuthentication {
     [CmdletBinding()]
     param ( $authParams )
-
+    
+    $authBody = @{}
+    $errorMessage = ""
 	if (!$authParams) {
 		Write-Host -ForegroundColor "Yellow" "`nNo Authentication Parameters provided`n"
         break
@@ -30,32 +32,31 @@ function Invoke-GraphAuthentication {
 
             $URI = "$authUri/token"; Write-Host "Requesting Token at $URI"
             Try {
-                $authResponse = Invoke-RestMethod -Method Post -Uri $URI -Body $authBody -ErrorAction Stop
+                $Response = Invoke-RestMethod -Method Post -Uri $URI -Body $authBody -ErrorAction Stop
                 
                 ## If there is no error and a response is returned.
                 Write-Host -ForeGroundColor Green "`n`nReceived Token!"
-                Write-Host -ForegroundColor Green "Connected and Access Token received and will expire $($Response.expires_on)"    
-                return $authResponse
+                Write-Host -ForegroundColor Yellow "Connected and Access Token received and will expire $($Response.expires_on)"    
+                return $Response
             } Catch {
-                return $_
+                $response = ($_ | ConvertFrom-JSON)
+                $message = "$($response.error) - $($response.error_description)"
+                Write-Error $message
+                return $message
             }
-            return $authResponse
         }
 
         "device_code" {
-            $authUri = "https://login.microsoftonline.com/$($authParams.tenantid)/oauth2";
+            $authUri = "https://login.microsoftonline.com/$($authParams.tenantid)/oauth2/v2.0";
             Write-Host "Device Code Authentication. Standby and wait for Device Code below."
             
             $authBody = @{
-                resource = $authParams.resource
-                grant_type = "device_code"
                 client_id = $authParams.client_id
+                scope = $authParams.scope
             }
-            if ($authParams.scope) { $authBody.scope = $authParams.scope}
-            
+            Write-Verbose ($authBody | ConvertTo-JSON)
             $deviceCodeResponse = Invoke-RestMethod -Method POST -Uri "$authUri/devicecode" -Body $authBody
             Write-verbose "Requesting device code from URI: $authUri/devicecode"
-            $authBody.code = $deviceCodeResponse.device_code
             Write-Host "`n$($deviceCodeResponse.message) "
             $code = ($deviceCodeResponse.message -split "code " | Select-Object -Last 1) -split " to authenticate."
             Write-Host "You can also goto https://aka.ms/devicelogin"
@@ -65,25 +66,45 @@ function Invoke-GraphAuthentication {
             Write-Host -ForeGroundColor Yellow "`nWaiting for code " -noNewLine
             $Response = $null
             $errorMessage = ""
+            Write-Verbose ($deviceCodeResponse | ConvertTo-JSON)
+
+            ## Get access token
+            $authBody = @{
+                grant_type = "urn:ietf:params:oauth:grant-type:device_code"
+                client_id = $authParams.client_id
+                device_code = $deviceCodeResponse.device_code
+            }
+            Write-Verbose ($authBody | ConvertTo-JSON)
             DO {
+                # Get Access Token after Device Code
                 Try {
                     $Response = Invoke-RestMethod -Method POST -Uri "$authUri/token" -Body $authBody -ErrorAction Stop
                     
                     ## If there is no error and a response is returned.
                     Write-Host -ForeGroundColor Green "`n`nReceived Token!"
-                    Write-Host -ForegroundColor Green "Connected and Access Token received and will expire $($Response.expires_on)"    
+                    Write-Host -ForegroundColor Green "Connected and Access Token received and will expire $($Response.expires_on)"   
+                    Write-Verbose ($Response | ConvertTO-JSON)
                     return $Response
                 }
                 Catch {
-                    $errorMessage = ($_.ErrorDetails.Message | ConvertFrom-Json)
-                    Write-Host "." -noNewLine
-                    Start-Sleep -Seconds 2
+                    if ($_) {
+                        Write-Host $_
+                        #$errorMessage = ($_.ErrorDetails.Message | ConvertFrom-JSON )
                     }
-            } While ($errorMessage.error -eq "authorization_pending")
-            if ($errorMessage) {
+                    Write-Host "." -noNewLine
+                    Start-Sleep -Seconds 4
+                    }
+            } 
+            While ($errorMessage.error -eq "authorization_pending" -or $Response.access_token -ne $null)
+            
+            if ($errorMessage.error -eq "invalid_client") {
+                Write-Host "Invalid Client sometimes means that the tenant did not enable public client flows. (Specifies whether the application is a public client. Appropriate for apps using token grant flows that don't use a redirect URI.) https://docs.microsoft.com/en-us/azure/active-directory/develop/msal-authentication-flows"
+            }
+            elseif ($errorMessage.error) {
                 Write-Host -foregroundColor red "`n`nProblem getting access token"
                 Write-Host ($errorMessage | ConvertTo-JSON)
             } 
+            
         }
         
         "refresh_token" {

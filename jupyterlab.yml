@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  app:
+    #build: ./
+    image: powershellplayground
+    volumes:
+      - /var/data/config/jupyter-playground/config/:/home/jovyan/.jupyter/
+      - /var/data/config/jupyter-playground/Notebooks:/home/jovyan/Notebooks
+    user: root
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+      labels:
+        # traefik
+        - traefik.enable=true
+        - traefik.docker.network=traefik_public
+
+        # traefikv1
+        #- traefik.frontend.rule=Host:sonarr.skyserver.cc
+        #- traefik.port=8989
+        # uncomment if you want to protect sonarr with traefik-forward-auth using traefikv1
+        # - traefik.frontend.auth.forward.address=http://traefik-forward-auth:4181
+        # - traefik.frontend.auth.forward.authResponseHeaders=X-Forwarded-User
+        # - traefik.frontend.auth.forward.trustForwardHeader=true
+
+        # traefikv2
+        - "traefik.http.routers.jupyter.rule=Host(`jupyter.skyserver.cc`)"
+        - "traefik.http.routers.jupyter.entryPoints=websecure"
+        - "traefik.http.services.jupyter.loadbalancer.server.port=8888"
+        - "traefik.http.routers.jupyter.middlewares=forward-auth" # this line enforces traefik-forward-auth
+    networks:
+      - traefik_public
+
+networks:
+  traefik_public:
+    external: true
