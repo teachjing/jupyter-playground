@@ -1,3 +1,6 @@
 [submodule "Notebooks/PowerShell/Microsoft/Security/Defender/External Repos/Defender-Hunting-Queries"]
 	path = Notebooks/PowerShell/Microsoft/Security/Defender/External Repos/Defender-Hunting-Queries
 	url = https://github.com/microsoft/Microsoft-365-Defender-Hunting-Queries
+[submodule "Notebooks/PowerShell/Microsoft/Intune/External Repos/msgraph-intune-samples"]
+	path = Notebooks/PowerShell/Microsoft/Intune/External Repos/msgraph-intune-samples
+	url = https://github.com/microsoftgraph/powershell-intune-samples
