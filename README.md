@@ -30,7 +30,13 @@ This playground is strictly to demo, lab, and understand. This is not intended t
 To get started with the playground, click on the launch binder link or goto [PowerShellPlayground.com](http://www.powershellplayground.com). It should load an environment on Mybinders.com which is a free cloud hosted notebook that will clone this repository. 
 
 #### To run your own Jupyter Notebook locally using docker. 
-clone the github repo and navigate to the docker folder.
+```
+docker run -p 8888:8888 teachjing/jupyter-playground
+
+add --user=root if you want sudo access to install whatever other stuff you want.
+```
+
+or you can clone the github repo and navigate to the docker folder.
 ```
 - docker build --tag powershellplayground .
 - docker run -p 8888:8888 powershellplayground
