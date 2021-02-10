@@ -36,7 +36,7 @@ clone the github repo and navigate to the docker folder.
 - docker run -p 8888:8888 powershellplayground
 ```
 
-Access it on http://<ip>:8888
+Access it on http://localhost:8888
 (There is not much security and the intent was to make it easy to play in this sandbox). Please make the necessary security improvements.
 
 #### Contributing
