@@ -1,0 +1,11 @@
+#ignore credentials
+.credential
+credential
+.cred
+
+**/credentials
+**/credentials.cred
+**/testing/*
+**/*.jupyterlab-workspace
+**/Untitled*.*
+**/*.ipynb_checkpoints

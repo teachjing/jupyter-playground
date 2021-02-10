@@ -9,3 +9,6 @@
 [submodule "Notebooks/PowerShell/Microsoft/Security/Azure Sentinel/External Repos/Azure-Sentinel-Repo"]
 	path = Notebooks/PowerShell/Microsoft/Security/Azure Sentinel/External Repos/Azure-Sentinel-Repo
 	url = https://github.com/Azure/Azure-Sentinel
+[submodule "Notebooks/PowerShell/Microsoft/Graph-API/External Repos/msgraph-security-api-solutions"]
+	path = Notebooks/PowerShell/Microsoft/Graph-API/External Repos/msgraph-security-api-solutions
+	url = https://github.com/microsoftgraph/security-api-solutions

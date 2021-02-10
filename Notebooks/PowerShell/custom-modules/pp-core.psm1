@@ -258,3 +258,14 @@ function Get-StoredCredentials {
 
     return $decryptedCredentialArray
 }
+
+function Get-EncodedString {
+    [CmdletBinding()]
+    param(
+        [string]$string
+    )
+
+    $encodedString=[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($string))
+    write-host -Foreground yellow "Encoded String:" $encodedString
+    return $encodedString
+}

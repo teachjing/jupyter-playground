@@ -78,6 +78,7 @@ COPY ./config ${HOME}/.jupyter/
 
 # Copy Notebooks
 COPY ./Notebooks ${HOME}/Notebooks
+ENV PATH="${PATH}:${HOME}/Notebooks"
 
 # Copy package sources
 COPY ./NuGet.config ${HOME}/nuget.config
