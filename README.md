@@ -31,7 +31,7 @@ To get started with the playground, click on the launch binder link or goto [Pow
 
 #### To run your own Jupyter Notebook locally using docker. 
 ```
-docker run -p 8888:8888 teachjing/jupyter-playground
+docker run -p 8888:8888 teachjing/jupyter-playground:latest
 
 add --user=root if you want sudo access to install whatever other stuff you want.
 ```
