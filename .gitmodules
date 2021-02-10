@@ -6,3 +6,6 @@
 	path = Notebooks/PowerShell/Microsoft/Intune/External Repos/msgraph-intune-samples
 	url = https://github.com/microsoftgraph/powershell-intune-samples
 
+[submodule "Notebooks/PowerShell/Microsoft/Security/Azure Sentinel/External Repos/Azure-Sentinel-Repo"]
+	path = Notebooks/PowerShell/Microsoft/Security/Azure Sentinel/External Repos/Azure-Sentinel-Repo
+	url = https://github.com/Azure/Azure-Sentinel
