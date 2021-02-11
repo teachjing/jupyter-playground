@@ -17,7 +17,9 @@ function Invoke-DockerAPI {
 
             switch ($method) {
                 "POST" {
-                    $response = (curl -s -X POST --unix-socket /var/run/docker.sock --header --data $body "Content-Type: application/json" $endpoint)
+                    #$jsonData = ( ($body | ConvertTo-JSON) -replace '"', '\"' )
+                    #$jsonData
+                    $response = (curl -s -X POST --unix-socket /var/run/docker.sock --header "Content-Type: application/json" --data $body "Content-Type: application/json" $endpoint)
                 }
                 "DELETE" {
                     Write-Host -foreground yellow "Deleting.... This may take a bit........."
